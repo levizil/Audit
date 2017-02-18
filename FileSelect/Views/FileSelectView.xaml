@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="FileSelect.Views.FileSelectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:interact="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True" 
+             >
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="FileSpecTemplate">
+            <Grid HorizontalAlignment="Stretch">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox IsReadOnly="True" Text="{Binding Name}" Grid.Row="0" Grid.ColumnSpan="2" Background="Gray" HorizontalContentAlignment="Center"/>
+                <TextBox Text="{Binding Path}"  Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Stretch"/>
+                <Button Content="..." Command="{Binding ElementName=root, Path=DataContext.AddFilePathCommand}" CommandParameter="{Binding}" Grid.Row="1" Grid.Column="1" />
+
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <interact:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding SystemNameRequest}">
+            <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True"/>
+        </prism:InteractionRequestTrigger>
+    </interact:Interaction.Triggers>
+    
+    <Grid Background="White" x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        
+        <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch" ItemsSource="{Binding FileSpecs}" ItemTemplate="{StaticResource FileSpecTemplate}"/>
+        <Button Grid.Row="1" Content="Add" HorizontalAlignment="Right" VerticalAlignment="Stretch" Command="{Binding AddFileSpecsCommand}"/>
+    </Grid>
+</UserControl>
